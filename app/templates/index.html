@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OilAndCharge - 주유 및 이동 비용 계산기</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>OilAndCharge</h1>
+            <p>내 차에 딱 맞는 주유 및 이동 비용 계산</p>
+        </header>
+
+        <div class="main-content">
+            <!-- 왼쪽: 검색 및 주유소 리스트 -->
+            <div class="card">
+                <h2>주변 주유소 검색</h2>
+                
+                <form action="/calculate" method="POST" class="calc-form">
+                    <div class="form-group">
+                        <label for="car-select"><strong>차량 선택:</strong></label>
+                        <select id="car-select" name="efficiency" class="form-control">
+                            <option value="12">내 차 (휘발유 - 연비 12 km/L)</option>
+                            <option value="15">세컨카 (휘발유 - 연비 15 km/L)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="amount"><strong>주유량 (L):</strong></label>
+                        <input type="number" id="amount" name="amount" value="30" step="1" class="form-control">
+                    </div>
+
+                    <input type="hidden" name="distance" id="selected-distance" value="15">
+                    <input type="hidden" name="price" id="selected-price" value="1650">
+
+                    <button type="submit" class="submit-btn">실질 소요 비용 계산하기</button>
+                </form>
+
+                <hr class="divider">
+
+                <div class="station-list">
+                    <div class="station-item">
+                        <div class="station-info">
+                            <h3>행복주유소 (휘발유)</h3>
+                            <p>거리: 3.2km (왕복 6.4km)</p>
+                        </div>
+                        <div class="station-price">1,620원/L</div>
+                    </div>
+                    <div class="station-item">
+                        <div class="station-info">
+                            <h3>알뜰주유소 (휘발유)</h3>
+                            <p>거리: 4.8km (왕복 9.6km)</p>
+                        </div>
+                        <div class="station-price">1,595원/L</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 오른쪽: 카카오맵 지도 영역 -->
+            <div class="card">
+                <h2>주유소 지도</h2>
+                <div class="map-wrapper">
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_KAKAO_MAP_API_KEY"></script>
+    <script>
+        var container = document.getElementById('map');
+        var options = {
+            center: new kakao.maps.LatLng(37.566826, 126.978656),
+            level: 3
+        };
+        var map = new kakao.maps.Map(container, options);
+    </script>
+</body>
+</html>
