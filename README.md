@@ -28,11 +28,11 @@ Flask 기반으로 오피넷 데이터를 활용해 주유소 및 충전소 정�
    `.env` 파일에서 `OPINET_API_KEY` 값을 실제 키로 수정합니다.
 4. 서버 실행
    ```bash
-   python run.py
+   python app.py
    ```
 
 ## 주요 파일
 - `app/__init__.py`: Flask 앱 팩토리
 - `app/config.py`: 환경 변수 로드
 - `app/fuel/`: 주유소/충전소 관련 기능
-- `run.py`: 실행 진입점
+- `app.py`: 실행 진입점
