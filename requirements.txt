@@ -3,3 +3,4 @@ PyMySQL==1.2.0
 gunicorn==26.0.0
 python-dotenv==1.2.3
 requests==2.34.2
+pyproj==3.7.2
