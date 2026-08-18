@@ -2,7 +2,7 @@ import pymysql
 from flask import g, current_app
 
 def get_db():
-    """¿äÃ»(Request) ´ÜÀ§·Î DB Ä¿³Ø¼ÇÀ» »ý¼ºÇÏ°Å³ª Àç»ç¿ë"""
+    """ï¿½ï¿½Ã»(Request) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ DB Ä¿ï¿½Ø¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°Å³ï¿½ ï¿½ï¿½ï¿½ï¿½"""
     if 'db' not in g:
         g.db = pymysql.connect(
             host=current_app.config['DB_HOST'],
@@ -16,7 +16,7 @@ def get_db():
     return g.db
 
 def close_db(e=None):
-    """HTTP ¿äÃ» Á¾·á ½Ã Ä¿³Ø¼Ç ¹ÝÈ¯"""
+    """HTTP ï¿½ï¿½Ã» ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Ä¿ï¿½Ø¼ï¿½ ï¿½ï¿½È¯"""
     db = g.pop('db', None)
     if db is not None:
         db.close()
