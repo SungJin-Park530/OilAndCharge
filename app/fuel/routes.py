@@ -48,7 +48,16 @@ def stations():
         "message": "주유소 조회 API 준비 중",
         "stations": []
     })
-
+    
+@fuel_bp.route("/car")
+def car_list():
+    """
+    DB에 저장되어 있는 자동차 정보를 불러와
+    카드 형태의 목록으로 출력한다.
+    차량 등록 버튼을 클릭해서 새 차량을 등록할 수도 있다.
+    """
+    return render_template("car.html")
+    
 
 @fuel_bp.route("/health")
 def health_check():
