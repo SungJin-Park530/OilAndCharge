@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>계산 결과 - OilAndCharge</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container" style="max-width: 600px; margin-top: 50px;">
+        <div class="card" style="text-align: center;">
+            <h2>비용 계산 결과</h2>
+            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+            
+            <p style="font-size: 18px; margin-bottom: 10px;">
+                왕복 이동 비용: <strong style="color: #3498db;">{{ travel_cost }}원</strong>
+            </p>
+            <p style="font-size: 22px; margin-bottom: 30px;">
+                최종 실질 소요 비용: <strong style="color: #e74c3c;">{{ total_cost }}원</strong>
+            </p>
+
+            <a href="/" class="btn" style="text-decoration: none; display: inline-block;">돌아가기</a>
+        </div>
+    </div>
+</body>
+</html>
