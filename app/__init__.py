@@ -17,6 +17,13 @@ def create_app() -> Flask:
     # 환경 변수 및 애플리케이션 설정 적용
     app.config.from_object(Config)
 
+    # JSON 응답에서 한글을 \uXXXX 형태로 변환하지 않고
+    # UTF-8 한글 문자열 그대로 반환하도록 설정함.
+    #
+    # Flask 2.3 이후 JSON_AS_ASCII 설정은 제거되었으므로
+    # app.json.ensure_ascii 속성을 사용해야 함.
+    app.json.ensure_ascii = False
+
     # 주유소 관련 Blueprint 등록
     app.register_blueprint(fuel_bp)
 
