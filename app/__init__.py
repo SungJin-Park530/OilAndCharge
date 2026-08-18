@@ -3,6 +3,7 @@ from flask import Flask
 from app.config import Config
 from app.fuel.routes import fuel_bp
 from app.models.database import init_db
+from app.vehicle.routes import vehicle_bp
 
 
 def create_app() -> Flask:
@@ -26,6 +27,9 @@ def create_app() -> Flask:
 
     # 주유소 관련 Blueprint 등록
     app.register_blueprint(fuel_bp)
+    
+    # 차량 등록/조회 API Blueprint 등록
+    app.register_blueprint(vehicle_bp)
 
     # 요청 종료 시 DB 연결이 자동으로 닫히도록 설정
     init_db(app)

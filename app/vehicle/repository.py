@@ -116,3 +116,77 @@ class VehicleRepository:
             )
 
             return cursor.fetchall()
+    
+    @staticmethod
+    def create_vehicle(
+        owner,
+        vehicle_name,
+        fuel_efficiency,
+        fuel_type
+    ):
+        """
+        새로운 차량 정보를 vehicle 테이블에 저장함.
+
+        Parameters
+        ----------
+        owner : str
+            차량 소유주 이름
+
+        vehicle_name : str
+            차량 이름
+
+        fuel_efficiency : float
+            차량 연비(km/L)
+
+        fuel_type : str
+            차량의 유종
+
+        Returns
+        -------
+        dict
+            DB에 등록된 차량 정보
+        """
+
+        db = get_db()
+
+        sql = """
+            INSERT INTO vehicle (
+                owner,
+                vehicle_name,
+                fuel_efficiency,
+                fuel_type,
+                card
+            )
+            VALUES (%s, %s, %s, %s, NULL)
+        """
+
+        try:
+            with db.cursor() as cursor:
+                cursor.execute(
+                    sql,
+                    (
+                        owner,
+                        vehicle_name,
+                        fuel_efficiency,
+                        fuel_type
+                    )
+                )
+
+                # AUTO_INCREMENT로 생성된 vehicle_id
+                # 값을 가져옴.
+                vehicle_id = cursor.lastrowid
+
+            # INSERT 작업 확정
+            db.commit()
+
+            # 방금 등록한 차량을 다시 조회하여
+            # 실제 DB 데이터를 반환함.
+            return VehicleRepository.get_by_id(
+                vehicle_id
+            )
+
+        except Exception:
+            # 등록 도중 문제가 발생하면
+            # 트랜잭션을 이전 상태로 되돌림.
+            db.rollback()
+            raise
