@@ -1,105 +1,463 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>OilAndCharge - 주유소 찾기</title>
-    <!-- index.css 파일 연결 -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+
+    <!-- CSS 연결 -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/index.css') }}">
 </head>
+
 <body>
 
-    <!-- 메인 컨텐츠 레이아웃 -->
     <main>
-        
-        <!-- 왼쪽: 차량 관리 및 최적가 주유소 탐색 패널 -->
+
+        <!-- ============================= -->
+        <!-- 왼쪽: 차량 및 주유소 검색 영역 -->
+        <!-- ============================= -->
         <aside>
-            
-            <!-- 패널 상단: 로고(좌측) 및 메뉴(우측) -->
+
             <div class="left-header-area">
+
                 <div class="logo">
                     OilAndCharge
                 </div>
+
                 <nav>
-                    <a href="/" class="nav-link-active">주유소 찾기</a>
-                    <a href="/car" class="nav-link">차량 관리</a>
+                    <a href="/" class="nav-link-active">
+                        주유소 찾기
+                    </a>
+
+                    <a href="/car" class="nav-link">
+                        차량 관리
+                    </a>
                 </nav>
+
             </div>
 
-            <!-- 최적가 주유소 탐색 섹션 -->
+
+            <!-- 최적가 주유소 검색 -->
             <div class="search-section">
+
                 <h2 class="section-title">
                     최적가 주유소 검색하기
                 </h2>
-                
-                <!-- 검색 옵션 -->
+
+
+                <!-- 차량 선택 -->
                 <div class="search-options">
+
                     <div class="input-group">
-                        <label>대상 차량</label>
+
+                        <label>
+                            대상 차량
+                        </label>
+
                         <select>
-                            <option>레이 (휘발유)</option>
+                            <option>
+                                레이 (휘발유)
+                            </option>
                         </select>
+
                     </div>
+
                 </div>
 
-                <!-- 주유소 리스트 카드 영역 -->
+
+                <!-- 주유소 리스트 -->
                 <div class="station-list">
-                    
-                    <!-- 카드 1 (최적추천) -->
+
+
+                    <!-- 주유소 1 -->
                     <div class="station-card optimal">
+
                         <div class="station-header">
+
                             <div class="station-title-area">
-                                <span class="station-name">GS칼텍스 강남점</span>
-                                <span class="badge-optimal">최적추천</span>
+
+                                <span class="station-name">
+                                    GS칼텍스 강남점
+                                </span>
+
+                                <span class="badge-optimal">
+                                    최적추천
+                                </span>
+
                             </div>
-                            <span class="distance">1.2km</span>
+
+                            <span class="distance">
+                                1.2km
+                            </span>
+
                         </div>
-                        <div class="price-text">단가 <strong style="color: #111827;">1,648원/L</strong></div>
+
+
+                        <div class="price-text">
+
+                            단가
+
+                            <strong style="color:#111827;">
+                                1,648원/L
+                            </strong>
+
+                        </div>
+
+
                         <div class="price-footer">
-                            <span class="cost-desc">실질 소요 비용<br>왕복 이동비 + 주유비</span>
-                            <span class="total-cost highlight">₩18,480</span>
+
+                            <span class="cost-desc">
+                                실질 소요 비용<br>
+                                왕복 이동비 + 주유비
+                            </span>
+
+                            <span class="total-cost highlight">
+                                ₩18,480
+                            </span>
+
                         </div>
+
                     </div>
 
-                    <!-- 카드 2 -->
+
+                    <!-- 주유소 2 -->
                     <div class="station-card">
+
                         <div class="station-header">
-                            <span class="station-name">SK에너지 서초점</span>
-                            <span class="distance">2.4km</span>
+
+                            <span class="station-name">
+                                SK에너지 서초점
+                            </span>
+
+                            <span class="distance">
+                                2.4km
+                            </span>
+
                         </div>
-                        <div class="price-text">단가 <strong style="color: #111827;">1,672원/L</strong></div>
+
+
+                        <div class="price-text">
+
+                            단가
+
+                            <strong style="color:#111827;">
+                                1,672원/L
+                            </strong>
+
+                        </div>
+
+
                         <div class="price-footer">
-                            <span class="cost-desc">실질 소요 비용<br>왕복 이동비 + 주유비</span>
-                            <span class="total-cost">₩19,120</span>
+
+                            <span class="cost-desc">
+                                실질 소요 비용<br>
+                                왕복 이동비 + 주유비
+                            </span>
+
+                            <span class="total-cost">
+                                ₩19,120
+                            </span>
+
                         </div>
+
                     </div>
 
-                    <!-- 카드 3 -->
+
+                    <!-- 주유소 3 -->
                     <div class="station-card">
+
                         <div class="station-header">
-                            <span class="station-name">S-OIL 역삼점</span>
-                            <span class="distance">3.1km</span>
+
+                            <span class="station-name">
+                                S-OIL 역삼점
+                            </span>
+
+                            <span class="distance">
+                                3.1km
+                            </span>
+
                         </div>
-                        <div class="price-text">단가 <strong style="color: #111827;">1,695원/L</strong></div>
+
+
+                        <div class="price-text">
+
+                            단가
+
+                            <strong style="color:#111827;">
+                                1,695원/L
+                            </strong>
+
+                        </div>
+
+
                         <div class="price-footer">
-                            <span class="cost-desc">실질 소요 비용<br>왕복 이동비 + 주유비</span>
-                            <span class="total-cost">₩19,750</span>
+
+                            <span class="cost-desc">
+                                실질 소요 비용<br>
+                                왕복 이동비 + 주유비
+                            </span>
+
+                            <span class="total-cost">
+                                ₩19,750
+                            </span>
+
                         </div>
+
                     </div>
 
                 </div>
+
             </div>
 
         </aside>
 
+
+
+        <!-- ======================== -->
         <!-- 오른쪽: 카카오맵 영역 -->
-        <div id="map">
-            <div class="map-placeholder">
-                카카오맵 API 연동 영역 (준비중)
+        <!-- ======================== -->
+
+        <div id="map-area"
+             style="
+                position:relative;
+                flex:1;
+                height:100vh;
+             ">
+
+
+            <!-- 현재 위치 좌표 표시 -->
+            <div id="location-info"
+                 style="
+                    position:absolute;
+                    top:20px;
+                    right:20px;
+                    z-index:10;
+                    background:white;
+                    padding:12px 16px;
+                    border-radius:8px;
+                    box-shadow:0 2px 8px rgba(0,0,0,0.2);
+                    font-size:14px;
+                 ">
+
+                현재 위치를 확인하는 중...
+
             </div>
+
+
+            <!-- 실제 지도 -->
+            <div id="map"
+                 style="
+                    width:100%;
+                    height:100%;
+                 ">
+            </div>
+
         </div>
 
     </main>
 
+
+
+    <!-- ================================= -->
+    <!-- 카카오맵 JavaScript SDK -->
+    <!-- ================================= -->
+
+    <script
+        type="text/javascript"
+        src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=37ebba41a7eafa0a56dbb8db48501aa9">
+    </script>
+
+
+
+    <!-- ================================= -->
+    <!-- 지도 생성 + 현재 위치 가져오기 -->
+    <!-- ================================= -->
+
+    <script>
+
+        // =====================================
+        // 1. 지도 만들기
+        // =====================================
+
+        var mapContainer =
+            document.getElementById('map');
+
+
+        var mapOption = {
+
+            // 처음에는 서울시청을 보여줍니다.
+            center: new kakao.maps.LatLng(
+                37.566826,
+                126.978656
+            ),
+
+            level: 3
+        };
+
+
+        var map = new kakao.maps.Map(
+            mapContainer,
+            mapOption
+        );
+
+
+
+        // =====================================
+        // 2. 현재 위치 가져오기
+        // =====================================
+
+        if (navigator.geolocation) {
+
+
+            navigator.geolocation.getCurrentPosition(
+
+                // =============================
+                // 위치 가져오기 성공
+                // =============================
+
+                function(position) {
+
+
+                    // 현재 위도
+                    var lat =
+                        position.coords.latitude;
+
+
+                    // 현재 경도
+                    var lon =
+                        position.coords.longitude;
+
+
+
+                    // 개발자 도구 Console에도 출력
+                    console.log(
+                        "현재 위도:",
+                        lat
+                    );
+
+                    console.log(
+                        "현재 경도:",
+                        lon
+                    );
+
+
+
+                    // =============================
+                    // 3. 화면에 좌표 표시
+                    // =============================
+
+                    document.getElementById(
+                        'location-info'
+                    ).innerHTML =
+
+                        "<strong>현재 위치</strong><br>" +
+
+                        "위도: " +
+                        lat.toFixed(6) +
+
+                        "<br>" +
+
+                        "경도: " +
+                        lon.toFixed(6);
+
+
+
+                    // =============================
+                    // 4. 현재 위치를
+                    // 카카오맵 좌표로 변환
+                    // =============================
+
+                    var currentPosition =
+                        new kakao.maps.LatLng(
+                            lat,
+                            lon
+                        );
+
+
+
+                    // =============================
+                    // 5. 지도 중심을
+                    // 현재 위치로 이동
+                    // =============================
+
+                    map.setCenter(
+                        currentPosition
+                    );
+
+
+
+                    // =============================
+                    // 6. 현재 위치 마커 생성
+                    // =============================
+
+                    var currentMarker =
+                        new kakao.maps.Marker({
+
+                            position:
+                                currentPosition
+
+                        });
+
+
+
+                    // =============================
+                    // 7. 지도에 마커 표시
+                    // =============================
+
+                    currentMarker.setMap(
+                        map
+                    );
+
+                },
+
+
+                // =============================
+                // 현재 위치 가져오기 실패
+                // =============================
+
+                function(error) {
+
+                    console.log(
+                        "현재 위치를 가져오지 못했습니다."
+                    );
+
+                    console.log(
+                        error
+                    );
+
+
+                    document.getElementById(
+                        'location-info'
+                    ).innerHTML =
+
+                        "<strong>위치 확인 실패</strong><br>" +
+
+                        "브라우저 위치 권한을 확인해주세요.";
+
+                }
+
+            );
+
+
+        } else {
+
+
+            // 브라우저가 위치 기능을 지원하지 않을 때
+
+            document.getElementById(
+                'location-info'
+            ).innerHTML =
+
+                "현재 위치 기능을 지원하지 않는 브라우저입니다.";
+
+        }
+
+    </script>
+
+
 </body>
+
 </html>
