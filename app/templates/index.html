@@ -1,215 +1,81 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>OilAndCharge - 주유 및 이동 비용 계산기</title>
-
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-
 <body>
-
     <div class="container">
-
         <header>
             <h1>OilAndCharge</h1>
             <p>내 차에 딱 맞는 주유 및 이동 비용 계산</p>
         </header>
 
-
         <div class="main-content">
-
             <!-- 왼쪽: 검색 및 주유소 리스트 -->
             <div class="card">
-
                 <h2>주변 주유소 검색</h2>
-
-                <form action="/calculate"
-                      method="POST"
-                      class="calc-form">
-
-                    <!-- 차량 선택 -->
+                
+                <form action="/calculate" method="POST" class="calc-form">
                     <div class="form-group">
-
-                        <label for="car-select">
-                            <strong>차량 선택:</strong>
-                        </label>
-
-                        <select id="car-select"
-                                name="efficiency"
-                                class="form-control">
-
-                            <option value="12">
-                                내 차 (휘발유 - 연비 12 km/L)
-                            </option>
-
-                            <option value="15">
-                                세컨카 (휘발유 - 연비 15 km/L)
-                            </option>
-
+                        <label for="car-select"><strong>차량 선택:</strong></label>
+                        <select id="car-select" name="efficiency" class="form-control">
+                            <option value="12">내 차 (휘발유 - 연비 12 km/L)</option>
+                            <option value="15">세컨카 (휘발유 - 연비 15 km/L)</option>
                         </select>
-
                     </div>
 
-
-                    <!-- 주유량 입력 -->
                     <div class="form-group">
-
-                        <label for="amount">
-                            <strong>주유량 (L):</strong>
-                        </label>
-
-                        <input
-                            type="number"
-                            id="amount"
-                            name="amount"
-                            value="30"
-                            step="1"
-                            class="form-control"
-                        >
-
+                        <label for="amount"><strong>주유량 (L):</strong></label>
+                        <input type="number" id="amount" name="amount" value="30" step="1" class="form-control">
                     </div>
 
+                    <input type="hidden" name="distance" id="selected-distance" value="15">
+                    <input type="hidden" name="price" id="selected-price" value="1650">
 
-                    <!-- 계산에 사용할 숨겨진 값 -->
-                    <input
-                        type="hidden"
-                        name="distance"
-                        id="selected-distance"
-                        value="15"
-                    >
-
-                    <input
-                        type="hidden"
-                        name="price"
-                        id="selected-price"
-                        value="1650"
-                    >
-
-
-                    <button
-                        type="submit"
-                        class="submit-btn">
-
-                        실질 소요 비용 계산하기
-
-                    </button>
-
+                    <button type="submit" class="submit-btn">실질 소요 비용 계산하기</button>
                 </form>
-
 
                 <hr class="divider">
 
-
-                <!-- 주유소 목록 -->
                 <div class="station-list">
-
-                    <!-- 첫 번째 주유소 -->
                     <div class="station-item">
-
                         <div class="station-info">
-
                             <h3>행복주유소 (휘발유)</h3>
-
-                            <p>
-                                거리: 3.2km (왕복 6.4km)
-                            </p>
-
+                            <p>거리: 3.2km (왕복 6.4km)</p>
                         </div>
-
-                        <div class="station-price">
-                            1,620원/L
-                        </div>
-
+                        <div class="station-price">1,620원/L</div>
                     </div>
-
-
-                    <!-- 두 번째 주유소 -->
                     <div class="station-item">
-
                         <div class="station-info">
-
                             <h3>알뜰주유소 (휘발유)</h3>
-
-                            <p>
-                                거리: 4.8km (왕복 9.6km)
-                            </p>
-
+                            <p>거리: 4.8km (왕복 9.6km)</p>
                         </div>
-
-                        <div class="station-price">
-                            1,595원/L
-                        </div>
-
+                        <div class="station-price">1,595원/L</div>
                     </div>
-
                 </div>
-
             </div>
-
 
             <!-- 오른쪽: 카카오맵 지도 영역 -->
             <div class="card">
-
                 <h2>주유소 지도</h2>
-
                 <div class="map-wrapper">
-
-                    <!-- 카카오 지도가 들어갈 자리 -->
-                    <div
-                        id="map"
-                        style="width: 100%; height: 500px;">
-                    </div>
-
+                    <div id="map"></div>
                 </div>
-
             </div>
-
         </div>
-
     </div>
 
-
-    <!-- 카카오 지도 JavaScript SDK 불러오기 -->
-    <script
-        type="text/javascript"
-        src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=37ebba41a7eafa0a56dbb8db48501aa9">
-    </script>
-
-
-    <!-- 카카오 지도 만들기 -->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_KAKAO_MAP_API_KEY"></script>
     <script>
-
-        // id가 map인 HTML 상자를 찾습니다.
         var container = document.getElementById('map');
-
-
-        // 지도 설정
         var options = {
-
-            // 테스트 위치: 서울시청 근처
-            center: new kakao.maps.LatLng(
-                37.566826,
-                126.978656
-            ),
-
-            // 지도 확대 정도
+            center: new kakao.maps.LatLng(37.566826, 126.978656),
             level: 3
         };
-
-
-        // 실제 지도 생성
-        var map = new kakao.maps.Map(
-            container,
-            options
-        );
-
+        var map = new kakao.maps.Map(container, options);
     </script>
-
 </body>
-
 </html>
