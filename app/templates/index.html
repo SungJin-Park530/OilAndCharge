@@ -57,157 +57,69 @@
                             대상 차량
                         </label>
 
-                        <select>
-                            <option>
-                                레이 (휘발유)
+                        <select id="vehicle-select">
+                            <option value="">
+                                차량을 선택해주세요
                             </option>
                         </select>
 
                     </div>
 
+                    <div class="input-group">
+                        <label>
+                            주유량 (L)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="fuel-amount"
+                            min="1"
+                            step="1"
+                            value="30"
+                            placeholder="예: 30"
+                        >
+                    </div>
+
+                </div>
+
+                <div
+                    style="
+                        display:flex;
+                        gap:8px;
+                        margin-bottom:12px;
+                    "
+                >
+                    <button
+                        type="button"
+                        id="search-btn"
+                        class="btn-primary"
+                        style="flex:1;"
+                    >
+                        주유소 검색
+                    </button>
+
+                    <button
+                        type="button"
+                        id="my-location-btn"
+                        class="btn-primary"
+                        style="
+                            flex:1;
+                            background-color:#4b5563;
+                        "
+                    >
+                        내 위치로 이동
+                    </button>
                 </div>
 
 
                 <!-- 주유소 리스트 -->
-                <div class="station-list">
-
-
-                    <!-- 주유소 1 -->
-                    <div class="station-card optimal">
-
-                        <div class="station-header">
-
-                            <div class="station-title-area">
-
-                                <span class="station-name">
-                                    GS칼텍스 강남점
-                                </span>
-
-                                <span class="badge-optimal">
-                                    최적추천
-                                </span>
-
-                            </div>
-
-                            <span class="distance">
-                                1.2km
-                            </span>
-
-                        </div>
-
-
-                        <div class="price-text">
-
-                            단가
-
-                            <strong style="color:#111827;">
-                                1,648원/L
-                            </strong>
-
-                        </div>
-
-
-                        <div class="price-footer">
-
-                            <span class="cost-desc">
-                                실질 소요 비용<br>
-                                왕복 이동비 + 주유비
-                            </span>
-
-                            <span class="total-cost highlight">
-                                ₩18,480
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- 주유소 2 -->
-                    <div class="station-card">
-
-                        <div class="station-header">
-
-                            <span class="station-name">
-                                SK에너지 서초점
-                            </span>
-
-                            <span class="distance">
-                                2.4km
-                            </span>
-
-                        </div>
-
-
-                        <div class="price-text">
-
-                            단가
-
-                            <strong style="color:#111827;">
-                                1,672원/L
-                            </strong>
-
-                        </div>
-
-
-                        <div class="price-footer">
-
-                            <span class="cost-desc">
-                                실질 소요 비용<br>
-                                왕복 이동비 + 주유비
-                            </span>
-
-                            <span class="total-cost">
-                                ₩19,120
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- 주유소 3 -->
-                    <div class="station-card">
-
-                        <div class="station-header">
-
-                            <span class="station-name">
-                                S-OIL 역삼점
-                            </span>
-
-                            <span class="distance">
-                                3.1km
-                            </span>
-
-                        </div>
-
-
-                        <div class="price-text">
-
-                            단가
-
-                            <strong style="color:#111827;">
-                                1,695원/L
-                            </strong>
-
-                        </div>
-
-
-                        <div class="price-footer">
-
-                            <span class="cost-desc">
-                                실질 소요 비용<br>
-                                왕복 이동비 + 주유비
-                            </span>
-
-                            <span class="total-cost">
-                                ₩19,750
-                            </span>
-
-                        </div>
-
-                    </div>
-
+                <div 
+                class="station-list"
+                id="station-list"
+                >
+                    <p>
+                        차량과 주유량을 선택한 후 검색해주세요.
+                    </p>
                 </div>
 
             </div>
@@ -267,7 +179,7 @@
 
     <script
         type="text/javascript"
-        src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=37ebba41a7eafa0a56dbb8db48501aa9">
+        src="https://dapi.kakao.com/v2/maps/sdk.js?appkey={{ config.KAKAO_JAVASCRIPT_KEY }}">
     </script>
 
 
@@ -277,6 +189,18 @@
     <!-- ================================= -->
 
     <script>
+        // 현재 사용자 위치를 저장할 변수.
+        // navigator.geolocation으로 위치 확인에 성공하면
+        // 실제 위도/경도가 저장됨.
+        let currentLat = null;
+        let currentLon = null;
+
+        // 주유소 고유 ID(uni_id)를 기준으로
+        // 해당 주유소의 마커와 정보창을 저장함.
+        //
+        // 왼쪽 주유소 카드와 오른쪽 지도 마커를
+        // 서로 연결할 때 사용함.
+        let stationMapItems = new Map();
 
         // =====================================
         // 1. 지도 만들기
@@ -330,6 +254,10 @@
                     var lon =
                         position.coords.longitude;
 
+                    // 검색 버튼을 눌렀을 때 사용할 수 있도록
+                    // 현재 위치를 별도 변수에 저장함.
+                    currentLat = lat;
+                    currentLon = lon;
 
 
                     // 개발자 도구 Console에도 출력
@@ -454,7 +382,636 @@
                 "현재 위치 기능을 지원하지 않는 브라우저입니다.";
 
         }
+        // =====================================
+        // 등록 차량 목록 조회
+        // =====================================
 
+        async function loadVehicles() {
+
+            const vehicleSelect =
+                document.getElementById('vehicle-select');
+
+            try {
+
+                // Flask에서 등록된 차량 목록을 조회함.
+                const response = await fetch(
+                    '/api/vehicles'
+                );
+
+                if (!response.ok) {
+                    throw new Error(
+                        '차량 목록 조회에 실패했습니다.'
+                    );
+                }
+
+                const data =
+                    await response.json();
+
+                // 기존 option 초기화
+                vehicleSelect.innerHTML =
+                    '<option value="">차량을 선택해주세요</option>';
+
+                // DB에서 가져온 차량을 select에 추가함.
+                data.vehicles.forEach(function(vehicle) {
+
+                    const option =
+                        document.createElement('option');
+
+                    // 이후 /api/stations 호출 시 사용할 vehicle_id
+                    option.value =
+                        vehicle.vehicle_id;
+
+                    option.textContent =
+                        vehicle.vehicle_name +
+                        ' (' +
+                        vehicle.fuel_type +
+                        ' / ' +
+                        vehicle.fuel_efficiency +
+                        'km/L)';
+
+                    vehicleSelect.appendChild(
+                        option
+                    );
+                });
+
+            } catch (error) {
+
+                console.error(
+                    '차량 목록 조회 오류:',
+                    error
+                );
+
+                vehicleSelect.innerHTML =
+                    '<option value="">차량 조회 실패</option>';
+            }
+        }
+
+
+        // =====================================
+        // 주유소 검색
+        // =====================================
+
+        async function searchStations() {
+
+            // 사용자가 선택한 vehicle_id
+            const vehicleId =
+                document.getElementById(
+                    'vehicle-select'
+                ).value;
+
+            // 사용자가 입력한 주유량
+            const fuelAmount =
+                document.getElementById(
+                    'fuel-amount'
+                ).value;
+
+
+            // 차량 선택 여부 검사
+            if (!vehicleId) {
+
+                alert(
+                    '차량을 선택해주세요.'
+                );
+
+                return;
+            }
+
+
+            // 주유량 검사
+            if (
+                !fuelAmount ||
+                Number(fuelAmount) <= 0
+            ) {
+
+                alert(
+                    '올바른 주유량을 입력해주세요.'
+                );
+
+                return;
+            }
+
+
+            // 현재 위치를 아직 가져오지 못한 경우
+            if (
+                currentLat === null ||
+                currentLon === null
+            ) {
+
+                alert(
+                    '현재 위치를 확인하지 못했습니다.'
+                );
+
+                return;
+            }
+
+
+            const stationList =
+                document.getElementById(
+                    'station-list'
+                );
+
+
+            // API 호출 동안 사용자에게 검색 중임을 표시
+            stationList.innerHTML =
+                '<p>주변 주유소를 검색하는 중...</p>';
+
+
+            try {
+
+                // 기존 Flask /api/stations의
+                // Query Parameter 형식에 맞게 생성함.
+                const params =
+                    new URLSearchParams({
+                        vehicle_id: vehicleId,
+                        amount: fuelAmount,
+                        lat: currentLat,
+                        lon: currentLon
+                    });
+
+
+                const response =
+                    await fetch(
+                        '/api/stations?' +
+                        params.toString()
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.error ||
+                        '주유소 검색에 실패했습니다.'
+                    );
+                }
+
+
+                // 백엔드에서 받은 주유소 목록을 화면에 표시
+                renderStations(
+                    data.stations
+                );
+
+                // 검색된 주유소들을 카카오맵에도 표시함.
+                renderStationMarkers(
+                    data.stations
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    '주유소 검색 오류:',
+                    error
+                );
+
+                stationList.innerHTML =
+                    '<p>주유소 검색에 실패했습니다.</p>';
+            }
+        }
+
+
+        // =====================================
+        // 기존 주유소 마커 제거
+        // =====================================
+
+        function clearStationMarkers() {
+
+            // 현재 지도에 표시되어 있는
+            // 모든 주유소 마커와 정보창을 제거함.
+            stationMapItems.forEach(function(item) {
+
+                item.marker.setMap(null);
+                item.infoWindow.close();
+            });
+
+            // 저장된 주유소 지도 정보 초기화
+            stationMapItems.clear();
+        }
+
+
+        // =====================================
+        // 검색 결과 주유소를 지도에 표시
+        // =====================================
+
+        function renderStationMarkers(stations) {
+
+            // 새로운 검색 결과를 표시하기 전에
+            // 이전 검색의 주유소 마커를 모두 제거함.
+            clearStationMarkers();
+
+
+            if (!stations || stations.length === 0) {
+                return;
+            }
+
+
+            // 현재 위치 + 검색된 주유소가
+            // 모두 지도 안에 보이도록 하기 위한 영역 객체
+            const bounds =
+                new kakao.maps.LatLngBounds();
+
+
+            // 현재 위치도 지도 영역에 포함
+            if (
+                currentLat !== null &&
+                currentLon !== null
+            ) {
+
+                bounds.extend(
+                    new kakao.maps.LatLng(
+                        currentLat,
+                        currentLon
+                    )
+                );
+            }
+
+
+            stations.forEach(
+                function(station) {
+
+                    // 길찾기 또는 좌표 변환 실패 등의 이유로
+                    // 좌표가 없는 주유소는 지도에 표시하지 않음.
+                    if (
+                        station.latitude == null ||
+                        station.longitude == null
+                    ) {
+                        return;
+                    }
+
+
+                    // 백엔드에서 받은 WGS84 좌표를
+                    // Kakao Map 좌표 객체로 변환함.
+                    const stationPosition =
+                        new kakao.maps.LatLng(
+                            station.latitude,
+                            station.longitude
+                        );
+
+
+                    // =============================
+                    // 주유소 마커 생성
+                    // =============================
+
+                    const marker =
+                        new kakao.maps.Marker({
+
+                            map: map,
+
+                            position:
+                                stationPosition
+
+                        });
+
+
+                    // =============================
+                    // 주유소 정보창 생성
+                    // =============================
+
+                    const infoWindow =
+                        new kakao.maps.InfoWindow({
+
+                            content: `
+                                <div
+                                    style="
+                                        padding:10px;
+                                        min-width:180px;
+                                        font-size:13px;
+                                        line-height:1.6;
+                                    "
+                                >
+                                    <strong>
+                                        ${station.os_nm}
+                                    </strong>
+
+                                    <br>
+
+                                    유가:
+                                    ${station.price.toLocaleString()}원/L
+
+                                    <br>
+
+                                    거리:
+                                    ${station.one_way_distance_km}km
+
+                                    <br>
+
+                                    실질비용:
+                                    ${station.total_cost.toLocaleString()}원
+                                </div>
+                            `
+
+                        });
+
+
+                    // =============================
+                    // 마커 클릭 이벤트
+                    // =============================
+
+                    kakao.maps.event.addListener(
+                        marker,
+                        'click',
+                        function() {
+
+                            stationMapItems.forEach(
+                                function(item) {
+                                    item.infoWindow.close();
+                                }
+                            );
+
+                            infoWindow.open(
+                                map,
+                                marker
+                            );
+                        }
+                    );
+
+
+                    // 주유소 고유 ID를 기준으로
+                    // 마커와 정보창을 저장함.
+                    //
+                    // 이후 왼쪽 주유소 카드를 클릭하면
+                    // 같은 uni_id를 이용해서 해당 마커를 찾을 수 있음.
+                    stationMapItems.set(
+                        station.uni_id,
+                        {
+                            marker: marker,
+                            infoWindow: infoWindow,
+                            position: stationPosition
+                        }
+                    );
+
+
+                    // 지도 표시 영역에 해당 주유소 포함
+                    bounds.extend(
+                        stationPosition
+                    );
+                }
+            );
+
+
+            // 현재 위치와 검색된 주유소들이
+            // 한 화면 안에 보이도록 지도 범위를 자동 조정함.
+            map.setBounds(
+                bounds
+            );
+        }
+
+
+        // =====================================
+        // 지도 중심을 현재 사용자 위치로 이동
+        // =====================================
+
+        function moveToCurrentLocation() {
+
+            // 현재 위치를 아직 가져오지 못한 경우
+            if (
+                currentLat === null ||
+                currentLon === null
+            ) {
+
+                alert(
+                    '현재 위치를 아직 확인하지 못했습니다.'
+                );
+
+                return;
+            }
+
+
+            // 현재 위도/경도를 Kakao 지도 좌표로 변환
+            const currentPosition =
+                new kakao.maps.LatLng(
+                    currentLat,
+                    currentLon
+                );
+
+
+            // 열려 있는 주유소 정보창 닫기
+            stationMapItems.forEach(
+                function(item) {
+
+                    item.infoWindow.close();
+                }
+            );
+
+
+            // 부드럽게 현재 위치로 이동
+            map.panTo(
+                currentPosition
+            );
+
+
+            // 주유소 선택 때문에 축척이 달라졌을 수 있으므로
+            // 현재 위치를 보기 편한 수준으로 맞춤
+            map.setLevel(3);
+        }
+
+
+        // =====================================
+        // 주유소 카드 → 지도 마커 연동
+        // =====================================
+
+        function focusStationOnMap(stationId) {
+
+            // uni_id를 이용하여 해당 주유소의
+            // 지도 마커 정보를 찾음.
+            const item =
+                stationMapItems.get(
+                    stationId
+                );
+
+
+            // 마커가 없는 경우
+            if (!item) {
+
+                console.warn(
+                    '해당 주유소의 지도 마커를 찾지 못했습니다.',
+                    stationId
+                );
+
+                return;
+            }
+
+
+            // 열려 있는 다른 주유소 정보창 닫기
+            stationMapItems.forEach(
+                function(mapItem) {
+
+                    mapItem.infoWindow.close();
+                }
+            );
+
+
+            // 선택한 주유소가 지도 중앙에 오도록 이동
+            map.panTo(
+                item.position
+            );
+
+
+            // 너무 멀리 축소되어 있다면
+            // 선택한 주유소를 보기 좋게 확대
+            map.setLevel(3);
+
+
+            // 선택한 주유소 정보창 표시
+            item.infoWindow.open(
+                map,
+                item.marker
+            );
+        }
+
+        // =====================================
+        // 주유소 카드 화면 출력
+        // =====================================
+
+        function renderStations(stations) {
+
+            const stationList =
+                document.getElementById(
+                    'station-list'
+                );
+
+
+            // 기존 검색 결과 제거
+            stationList.innerHTML = '';
+
+
+            // 검색 결과가 없는 경우
+            if (
+                !stations ||
+                stations.length === 0
+            ) {
+
+                stationList.innerHTML =
+                    '<p>주변 주유소를 찾지 못했습니다.</p>';
+
+                return;
+            }
+
+
+            stations.forEach(
+                function(station, index) {
+
+                    const card =
+                        document.createElement(
+                            'div'
+                        );
+
+
+                    // 백엔드에서 이미 total_cost 기준으로
+                    // 정렬해서 반환하므로 첫 번째 주유소가 최적 추천.
+                    card.className =
+                        index === 0
+                            ? 'station-card optimal'
+                            : 'station-card';
+                    
+                    // 클릭 가능한 카드임을 시각적으로 표시
+                    card.style.cursor = 'pointer';
+
+
+                    card.innerHTML = `
+                        <div class="station-header">
+
+                            <div class="station-title-area">
+
+                                <span class="station-name">
+                                    ${station.os_nm}
+                                </span>
+
+                                ${
+                                    index === 0
+                                        ? `
+                                            <span class="badge-optimal">
+                                                최적추천
+                                            </span>
+                                        `
+                                        : ''
+                                }
+
+                            </div>
+
+                            <span class="distance">
+                                ${station.one_way_distance_km}km
+                            </span>
+
+                        </div>
+
+
+                        <div class="price-text">
+
+                            단가
+
+                            <strong style="color:#111827;">
+                                ${station.price.toLocaleString()}원/L
+                            </strong>
+
+                        </div>
+
+
+                        <div class="price-footer">
+
+                            <span class="cost-desc">
+                                실질 소요 비용<br>
+                                왕복 이동비 + 주유비
+                            </span>
+
+                            <span class="
+                                total-cost
+                                ${index === 0 ? 'highlight' : ''}
+                            ">
+                                ₩${station.total_cost.toLocaleString()}
+                            </span>
+
+                        </div>
+                    `;
+
+                    // 왼쪽 주유소 카드를 클릭하면
+                    // 해당 주유소의 지도 마커로 이동하고
+                    // 정보창을 표시함.
+                    card.addEventListener(
+                        'click',
+                        function() {
+
+                            focusStationOnMap(
+                                station.uni_id
+                            );
+                        }
+                    );
+
+                    stationList.appendChild(
+                        card
+                    );
+                }
+            );
+        }
+
+
+        // =====================================
+        // 검색 버튼 클릭 이벤트 연결
+        // =====================================
+
+        document.getElementById(
+            'search-btn'
+        ).addEventListener(
+            'click',
+            searchStations
+        );
+
+        document.getElementById(
+            'my-location-btn'
+        ).addEventListener(
+            'click',
+            moveToCurrentLocation
+        );
+
+
+        // =====================================
+        // 페이지가 열리면 DB 차량 목록 조회
+        // =====================================
+
+        loadVehicles();
     </script>
 
 

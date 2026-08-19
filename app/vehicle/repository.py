@@ -35,8 +35,7 @@ class VehicleRepository:
                 owner,
                 vehicle_name,
                 fuel_efficiency,
-                fuel_type,
-                card
+                fuel_type
             FROM vehicle
             WHERE vehicle_id = %s
         """
@@ -71,8 +70,7 @@ class VehicleRepository:
                 owner,
                 vehicle_name,
                 fuel_efficiency,
-                fuel_type,
-                card
+                fuel_type
             FROM vehicle
             WHERE fuel_type = '휘발유'
             ORDER BY vehicle_id
@@ -101,8 +99,7 @@ class VehicleRepository:
                 owner,
                 vehicle_name,
                 fuel_efficiency,
-                fuel_type,
-                card
+                fuel_type
             FROM vehicle
             WHERE owner = %s
               AND fuel_type = '휘발유'
@@ -154,10 +151,9 @@ class VehicleRepository:
                 owner,
                 vehicle_name,
                 fuel_efficiency,
-                fuel_type,
-                card
+                fuel_type
             )
-            VALUES (%s, %s, %s, %s, NULL)
+            VALUES (%s, %s, %s, %s)
         """
 
         try:
