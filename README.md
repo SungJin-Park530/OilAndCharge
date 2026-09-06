@@ -10,8 +10,6 @@
 
  ## 서비스 화면
 
- <!-- 서비스 화면 캡처를 이 섹션에 추가하세요. 권장: `docs/images/`에 이미지를 저장하고 Markdown 이미지 문법으로 연결합니다. -->
-
  | 메인 화면 | 차량 등록 화면 | 조회 결과 화면 |
  | --- | --- | --- |
  | ![메인 화면](docs/images/main.png) | ![차량 등록 화면](docs/images/car.png) | ![조회 결과 화면](docs/images/result.png) |
@@ -28,13 +26,13 @@
 
  | 구분 | 기술 |
  | --- | --- |
- | Backend | Python, Flask, Gunicorn |
- | Frontend | HTML, CSS, Vanilla JavaScript |
- | Database | MariaDB, PyMySQL |
- | 지도 | Kakao Maps Web SDK |
- | 좌표 변환 | pyproj |
- | HTTP / 환경 설정 | requests, python-dotenv |
- | Deployment | Cloudtype |
+ | Backend | ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=Python&logoColor=white) ![Flask](https://img.shields.io/badge/Flask-000000?style=flat-square&logo=Flask&logoColor=white) ![Gunicorn](https://img.shields.io/badge/Gunicorn-499848?style=flat-square&logo=Gunicorn&logoColor=white) |
+ | Frontend | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=HTML5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=CSS3&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=JavaScript&logoColor=black) |
+ | Database | ![MariaDB](https://img.shields.io/badge/MariaDB-003545?style=flat-square&logo=MariaDB&logoColor=white) ![PyMySQL](https://img.shields.io/badge/PyMySQL-3776AB?style=flat-square&logo=Python&logoColor=white) |
+ | 지도 | ![Kakao Maps](https://img.shields.io/badge/Kakao%20Maps-FFCD00?style=flat-square&logo=Kakao&logoColor=black) |
+ | 좌표 변환 | ![pyproj](https://img.shields.io/badge/pyproj-3776AB?style=flat-square&logo=Python&logoColor=white) |
+ | HTTP / 환경 설정 | ![requests](https://img.shields.io/badge/requests-3776AB?style=flat-square&logo=Python&logoColor=white) ![python--dotenv](https://img.shields.io/badge/python--dotenv-ECD53F?style=flat-square&logo=Python&logoColor=black) |
+ | Deployment | ![Cloudtype](https://img.shields.io/badge/Cloudtype-3B82F6?style=flat-square&logoColor=white) |
 
  ## 사용 API
 
@@ -44,7 +42,7 @@
  | [Kakao Mobility](https://developers.kakaomobility.com/) | 경로 탐색 및 이동 거리 계산 | `KAKAO_REST_API_KEY` |
  | [Kakao Maps Web SDK](https://apis.map.kakao.com/) | 지도 렌더링 및 주유소 마커 표시 | `KAKAO_JAVASCRIPT_KEY` |
 
- OPINET 데이터는 한국석유공사 오피넷에서 제공합니다. 서비스 배포 시 데이터 출처와 이용 조건을 화면에도 표시하세요.
+ > 유가정보 데이터는 한국석유공사 오피넷에서 제공하는 API를 활용해서 제작되었습니다.
 
  ## 서비스 아키텍처
 
