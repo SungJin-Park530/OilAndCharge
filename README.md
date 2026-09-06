@@ -6,17 +6,7 @@
 
  ## 시연 영상
 
- <iframe
-       width="560"
-       height="315"
-       src="https://www.youtube.com/embed/MbcDpnc_Ljg"
-       title="OilAndCharge 시연 영상"
-       frameborder="0"
-       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-       allowfullscreen
- ></iframe>
-
- [YouTube에서 시연 영상 보기](https://youtu.be/MbcDpnc_Ljg)
+ [![OilAndCharge 시연 영상](https://img.youtube.com/vi/MbcDpnc_Ljg/maxresdefault.jpg)](https://youtu.be/MbcDpnc_Ljg)
 
  ## 서비스 화면
 
