@@ -4,13 +4,19 @@
 
  현재 MVP는 휘발유 차량과 휘발유(B027) 조회를 대상으로 합니다.
 
- ## 주요 기능
+ ## 시연 영상
 
- - 주변 주유소 조회 및 카카오맵 마커 표시
- - 등록 차량의 연비를 반영한 왕복 이동비 계산
- - 주유량, 리터당 가격, 이동비를 합산한 예상 소요 비용 계산
- - 차량 등록 및 등록 차량 목록 조회
- - OPINET 조회 결과의 데이터베이스 캐싱
+ <iframe
+       width="560"
+       height="315"
+       src="https://www.youtube.com/embed/MbcDpnc_Ljg"
+       title="OilAndCharge 시연 영상"
+       frameborder="0"
+       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+       allowfullscreen
+ ></iframe>
+
+ [YouTube에서 시연 영상 보기](https://youtu.be/MbcDpnc_Ljg)
 
  ## 서비스 화면
 
@@ -20,11 +26,13 @@
  | --- | --- | --- |
  | ![메인 화면](docs/images/main.png) | ![차량 등록 화면](docs/images/car.png) | ![조회 결과 화면](docs/images/result.png) |
 
- ## 시연 영상
+ ## 주요 기능
 
- <!-- 시연 영상의 YouTube, Google Drive 또는 기타 공개 링크를 아래에 추가하세요. -->
-
- [시연 영상 보기](https://example.com)
+ - 주변 주유소 조회 및 카카오맵 마커 표시
+ - 등록 차량의 연비를 반영한 왕복 이동비 계산
+ - 주유량, 리터당 가격, 이동비를 합산한 예상 소요 비용 계산
+ - 차량 등록 및 등록 차량 목록 조회
+ - OPINET 조회 결과의 데이터베이스 캐싱
 
  ## 기술 스택
 
@@ -36,6 +44,7 @@
  | 지도 | Kakao Maps Web SDK |
  | 좌표 변환 | pyproj |
  | HTTP / 환경 설정 | requests, python-dotenv |
+ | Deployment | Cloudtype |
 
  ## 사용 API
 
@@ -52,6 +61,7 @@
  ```mermaid
  flowchart LR
        User[사용자] --> Web[Flask 웹 애플리케이션]
+       Cloudtype[Cloudtype] --> Web
        Web --> FuelRoutes[Fuel Blueprint]
        Web --> VehicleRoutes[Vehicle Blueprint]
        FuelRoutes --> Search[주유소 검색 서비스]
@@ -71,6 +81,7 @@
  - `app/vehicle/`: 차량 등록과 조회를 담당합니다.
  - `app/models/database.py`: MariaDB 연결과 요청 종료 시 연결 해제를 담당합니다.
  - WGS84 위치 좌표를 OPINET 요청용 KATEC/TM128 좌표로 변환하고, 응답 좌표는 다시 WGS84로 변환해 지도에 표시합니다.
+ - 애플리케이션은 Cloudtype을 통해 배포합니다.
 
  ## 시작하기
 
@@ -108,6 +119,8 @@
  ```
 
  브라우저에서 `http://localhost:5000`에 접속합니다.
+
+> **배포 환경 안내:** Cloudtype 무료 플랜을 사용하므로 서버는 매일 자정에 자동으로 중지됩니다.
 
  ## API 엔드포인트
 
