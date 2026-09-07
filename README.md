@@ -18,6 +18,8 @@
 
 현재 MVP는 휘발유 차량과 휘발유(B027) 조회를 대상으로 합니다.
 
+[서비스 접속 링크](https://port-0-oilandcharge-mstwa15r85de9006.sel3.cloudtype.app/)를 클릭하시면 서비스에 접속해서 확인하실 수 있습니다. Cloudtype 배포 정책상 매일 자정에 서버가 휴면 상태에 돌입하므로, 접속을 위해서는 어드민의 수동 서버 활성화가 필요합니다.
+
 ## 시연 영상
 
 [![OilAndCharge 시연 영상](https://img.youtube.com/vi/MbcDpnc_Ljg/maxresdefault.jpg)](https://youtu.be/MbcDpnc_Ljg)
