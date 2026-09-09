@@ -99,7 +99,7 @@ flowchart LR
 - WGS84 위치 좌표를 OPINET 요청용 KATEC/TM128 좌표로 변환하고, 응답 좌표는 다시 WGS84로 변환해 지도에 표시합니다.
 - 애플리케이션은 Cloudtype을 통해 배포합니다.
 
-## API 엔드포인트 명세
+## API 명세 (Swagger UI)
 
 | Method | Endpoint | 설명 |
 | --- | --- | --- |
@@ -112,24 +112,13 @@ flowchart LR
 | `POST` | `/api/vehicles` | 차량 등록. JSON 본문에 `owner`, `vehicle_name`, `fuel_efficiency`, `fuel_type`을 사용합니다. |
 | `POST` | `/calculate` | 입력한 연비, 주유량, 거리, 가격을 기준으로 이동비와 총비용 계산 |
 
-### `GET /api/stations` 요청 예시
+API 엔드포인트의 상세 명세는 Swagger UI에서도 확인 가능합니다.
 
-```text
-/api/stations?vehicle_id=1&amount=30&lat=37.566826&lon=126.9786567
-```
+- 로컬 실행: `http://localhost:5000/apidocs`
+- 배포 환경: `https://port-0-oilandcharge-mstwa15r85de9006.sel3.cloudtype.app/apidocs`
+- OpenAPI 원본 파일: [app/static/swagger.yaml](app/static/swagger.yaml)
 
-필수 쿼리 파라미터는 `vehicle_id`, `amount`, `lat`, `lon`입니다.
-
-### `POST /api/vehicles` 요청 예시
-
-```json
-{
-    "owner": "test_user",
-    "vehicle_name": "아반떼",
-    "fuel_efficiency": 12.5,
-    "fuel_type": "휘발유"
-}
-```
+Swagger UI에서 각 API의 요청 파라미터, 요청 본문, 응답 코드와 예시를 확인하고 `Try it out`으로 직접 호출해 볼 수 있습니다. 서버가 실행 중이 아니면 Swagger UI에 접속할 수 없으므로 먼저 애플리케이션을 실행해 주세요.
 
 ## 프로젝트 디렉토리 구조
 
