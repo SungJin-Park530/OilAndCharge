@@ -1,11 +1,10 @@
-from flask import Flask, app
+from flask import Flask
+from flask_swagger_ui import get_swaggerui_blueprint
 
 from app.config import Config
 from app.fuel.routes import fuel_bp
 from app.models.database import init_db
 from app.vehicle.routes import vehicle_bp
-
-from flask_swagger_ui import get_swaggerui_blueprint
 
 def create_app() -> Flask:
     """
@@ -31,24 +30,26 @@ def create_app() -> Flask:
     
     # 차량 등록/조회 API Blueprint 등록
     app.register_blueprint(vehicle_bp)
+    
+    # ---
+    # 1. Swagger UI 설정
+    SWAGGER_URL = '/apidocs'          # 브라우저에서 접속할 URL 경로
+    API_URL = '/static/swagger.yaml'  # swagger.yaml 파일이 위치한 정적 파일 경로
+
+    # 2. Swagger UI Blueprint 생성
+    swagger_ui_blueprint = get_swaggerui_blueprint(
+        SWAGGER_URL,
+        API_URL,
+        config={
+            'app_name': "OilAndCharge API Documentation"  # 화면 상단에 표시될 프로젝트 이름
+        }
+    )
+
+    # 3. Flask 앱에 등록 (app이 생성된 후)
+    app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
+    # ---
 
     # 요청 종료 시 DB 연결이 자동으로 닫히도록 설정
     init_db(app)
 
     return app
-
-# 1. Swagger UI 설정
-SWAGGER_URL = '/apidocs'          # 브라우저에서 접속할 URL 경로
-API_URL = '/static/swagger.yaml'  # swagger.yaml 파일이 위치한 정적 파일 경로
-
-# 2. Swagger UI Blueprint 생성
-swagger_ui_blueprint = get_swaggerui_blueprint(
-    SWAGGER_URL,
-    API_URL,
-    config={
-        'app_name': "OilAndCharge API Documentation"  # 화면 상단에 표시될 프로젝트 이름
-    }
-)
-
-# 3. Flask 앱에 등록 (app이 생성된 후)
-app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
