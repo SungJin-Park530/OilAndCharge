@@ -1,4 +1,8 @@
- # OilAndCharge
+# OilAndCharge
+
+사용자 위치와 등록 차량의 연비를 바탕으로 주변 주유소를 찾고, 주유 가격과 왕복 이동비를 함께 계산하는 웹 서비스입니다.
+
+현재 MVP는 휘발유 차량과 휘발유(B027) 조회를 대상으로 합니다.
 
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=Python&logoColor=white)
 ![Flask](https://img.shields.io/badge/Flask-000000?style=flat-square&logo=Flask&logoColor=white)
@@ -14,17 +18,26 @@
 ![python--dotenv](https://img.shields.io/badge/python--dotenv-ECD53F?style=flat-square&logo=Python&logoColor=black)
 ![Cloudtype](https://img.shields.io/badge/Cloudtype-3B82F6?style=flat-square&logoColor=white)
 
-사용자 위치와 등록 차량의 연비를 바탕으로 주변 주유소를 찾고, 주유 가격과 왕복 이동비를 함께 계산하는 웹 서비스입니다.
+## 프로젝트 소개 및 접속 링크
 
-현재 MVP는 휘발유 차량과 휘발유(B027) 조회를 대상으로 합니다.
+[서비스 접속하기](https://port-0-oilandcharge-mstwa15r85de9006.sel3.cloudtype.app/)
 
-[서비스 접속 링크](https://port-0-oilandcharge-mstwa15r85de9006.sel3.cloudtype.app/)를 클릭하시면 서비스에 접속해서 확인하실 수 있습니다. Cloudtype 배포 정책상 매일 자정에 서버가 휴면 상태에 돌입하므로, 접속을 위해서는 어드민의 수동 서버 활성화가 필요합니다.
+Cloudtype 배포 정책상 매일 자정에 서버가 휴면 상태에 돌입할 수 있습니다. 접속이 되지 않는 경우 배포 관리자의 서버 활성화가 필요합니다.
 
-## 시연 영상
+## 팀 구성 및 역할 분담
+
+| 구분 | 담당자 | 역할 |
+| --- | --- | --- |
+| 기획 및 문서화 | [담당자 입력] | 서비스 요구사항 정리, README 및 문서 관리 |
+| 백엔드 | [담당자 입력] | Flask API, 주유소 검색, 비용 계산, 차량 관리 |
+| 프론트엔드 | [담당자 입력] | 화면 구성, 사용자 입력, 결과 표시, Kakao Maps 연동 |
+| 인프라 및 배포 | [담당자 입력] | MariaDB 및 Cloudtype 배포 환경 관리 |
+
+> 실제 팀원 이름과 세부 역할은 프로젝트 팀 구성에 맞게 입력해 주세요.
+
+## 시연 영상 및 서비스 화면
 
 [![OilAndCharge 시연 영상](https://img.youtube.com/vi/MbcDpnc_Ljg/maxresdefault.jpg)](https://youtu.be/MbcDpnc_Ljg)
-
-## 서비스 화면
 
 | 메인 화면 | 차량 등록 화면 | 조회 결과 화면 |
 | --- | --- | --- |
@@ -37,6 +50,7 @@
 - 주유량, 리터당 가격, 이동비를 합산한 예상 소요 비용 계산
 - 차량 등록 및 등록 차량 목록 조회
 - OPINET 조회 결과의 데이터베이스 캐싱
+- 서버 상태 확인을 위한 헬스 체크
 
 ## 기술 스택
 
@@ -47,10 +61,10 @@
 | Database | MariaDB, PyMySQL |
 | 지도 | Kakao Maps |
 | 좌표 변환 | pyproj |
-| HTTP / 환경 설정 | rquests, python-dotenv |
+| HTTP / 환경 설정 | requests, python-dotenv |
 | Deployment | Cloudtype |
 
-## 사용 API
+## 사용 외부 API
 
 | API | 용도 | 인증 환경 변수 |
 | --- | --- | --- |
@@ -87,14 +101,63 @@ flowchart LR
 - WGS84 위치 좌표를 OPINET 요청용 KATEC/TM128 좌표로 변환하고, 응답 좌표는 다시 WGS84로 변환해 지도에 표시합니다.
 - 애플리케이션은 Cloudtype을 통해 배포합니다.
 
-## 시작하기
+## API 엔드포인트 명세
 
-### 사전 요구 사항
+| Method | Endpoint | 설명 |
+| --- | --- | --- |
+| `GET` | `/` | 메인 화면 |
+| `GET` | `/history` | 계산 이력 화면. 현재는 빈 목록을 표시합니다. |
+| `GET` | `/car` | 차량 목록 및 차량 등록 화면 |
+| `GET` | `/health` | 서버 상태 확인. 정상 응답 시 `status: ok`를 반환합니다. |
+| `GET` | `/api/stations` | 주변 주유소 검색 및 차량 연비 기반 비용 계산 |
+| `GET` | `/api/vehicles` | 등록 차량 목록 조회. 선택적으로 `owner` 쿼리 파라미터를 사용할 수 있습니다. |
+| `POST` | `/api/vehicles` | 차량 등록. JSON 본문에 `owner`, `vehicle_name`, `fuel_efficiency`, `fuel_type`을 사용합니다. |
+| `POST` | `/calculate` | 입력한 연비, 주유량, 거리, 가격을 기준으로 이동비와 총비용 계산 |
 
-- Python 3
-- MariaDB 접근 정보
+### `GET /api/stations` 요청 예시
+
+```text
+/api/stations?vehicle_id=1&amount=30&lat=37.566826&lon=126.9786567
+```
+
+필수 쿼리 파라미터는 `vehicle_id`, `amount`, `lat`, `lon`입니다.
+
+### `POST /api/vehicles` 요청 예시
+
+```json
+{
+    "owner": "test_user",
+    "vehicle_name": "아반떼",
+    "fuel_efficiency": 12.5,
+    "fuel_type": "휘발유"
+}
+```
+
+## 프로젝트 디렉토리 구조
+
+```text
+app/
+        __init__.py              # Flask 애플리케이션 및 Blueprint 초기화
+        config.py                # 환경 변수 기반 설정
+        fuel/                    # 주유소 검색, 좌표 변환, 비용 계산
+        models/                  # 데이터베이스 연결
+        static/                  # CSS 및 JavaScript
+        templates/               # Jinja2 HTML 템플릿
+        vehicle/                 # 차량 등록 및 조회
+docs/images/                 # README 서비스 화면 이미지
+requirements.txt             # Python 의존성
+run.py                       # 애플리케이션 실행 진입점
+```
+
+## 시작하기 / 실행 방법
+
+### 사전 요구사항
+
+- Python 3.10 이상
+- MariaDB 접근 정보 및 실행 가능한 데이터베이스
 - OPINET API 키
 - Kakao REST API 키 및 JavaScript 키
+- Windows PowerShell 또는 가상 환경을 활성화할 수 있는 터미널
 
 ### 설치 및 실행
 
@@ -104,7 +167,9 @@ python -m venv venv
 pip install -r requirements.txt
 ```
 
-프로젝트 루트에 `.env` 파일을 만들고 다음 값을 설정합니다.
+### 환경 변수 설정 (`.env` Configuration)
+
+프로젝트 루트에 `.env` 파일을 만들고 다음 값을 설정합니다. API 키와 데이터베이스 비밀번호는 저장소에 커밋하지 않아야 합니다.
 
 ```env
 SECRET_KEY=change-me
@@ -118,6 +183,10 @@ DB_PASSWORD=your-db-password
 DB_NAME=your-db-name
 ```
 
+`DB_PORT`를 생략하면 기본값 `3306`이 사용됩니다.
+
+### 애플리케이션 실행
+
 ```bash
 python run.py
 ```
@@ -126,31 +195,11 @@ python run.py
 
 > **배포 환경 안내:** Cloudtype 무료 플랜을 사용하므로 서버는 매일 자정에 자동으로 중지됩니다.
 
-## API 엔드포인트
-
-| Method | Endpoint | 설명 |
-| --- | --- | --- |
-| `GET` | `/` | 메인 화면 |
-| `GET` | `/history` | 계산 이력 화면 |
-| `GET` | `/api/stations` | 주변 주유소 검색 및 비용 계산 |
-| `GET` | `/api/vehicles` | 등록 차량 목록 조회 |
-| `POST` | `/api/vehicles` | 차량 등록 |
-
-## 프로젝트 구조
-
-```text
-app/
-    fuel/       # 주유소 검색, 좌표 변환, 비용 계산
-    vehicle/    # 차량 등록 및 조회
-    models/     # 데이터베이스 연결
-    static/     # CSS, JavaScript
-    templates/  # HTML 템플릿
-run.py        # 애플리케이션 실행 진입점
-```
-
-## 향후 개선
+## 향후 개선 계획
 
 - 전기차 충전소와 경유, LPG 등 유종 확대
 - 사용자 위치 직접 지정
 - 차량 수정 및 삭제
 - 정렬, 즐겨찾기, 지도 마커와 목록의 상호작용 개선
+- 계산 이력의 데이터베이스 저장 및 조회
+- 사용자 인증과 사용자별 차량·계산 이력 관리
