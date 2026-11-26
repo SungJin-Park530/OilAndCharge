@@ -18,6 +18,15 @@
 ![python--dotenv](https://img.shields.io/badge/python--dotenv-ECD53F?style=flat-square&logo=Python&logoColor=black)
 ![Cloudtype](https://img.shields.io/badge/Cloudtype-3B82F6?style=flat-square&logoColor=white)
 
+## 누가 개발했나요?
+
+<table>
+  <tr>
+    <td><a href="https://sungjin-park530.github.io/web_portfolio/"><img src = "https://res.cloudinary.com/vrp8ghjs/image/upload/v1795673336/doc.png"></a></td>
+    <td>팀장인 저 '박성진'을 주축으로 총 5명의 팀원이 함께 개발했습니다. </br> 좌측 이미지를 클릭하시면 <b>포트폴리오 페이지</b>로 이동합니다! </td>
+  </tr>
+</table>
+
 ## 프로젝트 소개 및 접속 링크
 
 [서비스 접속하기](https://port-0-oilandcharge-mstwa15r85de9006.sel3.cloudtype.app/)
